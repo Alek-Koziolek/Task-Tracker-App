@@ -16,8 +16,8 @@ function TaskList(props) {
           description={task.description}
           dueDate={task.dueDate}
           completed={false}
-          onCompletion={props.onCompletion}
-          onReinstatement={props.onReinstatement}
+          onCompletionStatusChange={props.onCompletionStatusChange}
+          onTaskDeletion={props.onTaskDeletion}
         />
       );
     });
@@ -35,18 +35,18 @@ function TaskList(props) {
           description={task.description}
           dueDate={task.dueDate}
           completed={true}
-          onCompletion={props.onCompletion}
-          onReinstatement={props.onReinstatement}
+          onCompletionStatusChange={props.onCompletionStatusChange}
+          onTaskDeletion={props.onTaskDeletion}
         />
       );
     });
 
   return (
     <Fragment>
-      <TasksInfo
+      {props.tasks.length > 0 && <TasksInfo
         completed={completedTasks.length}
         allTasksNumber={props.tasks.length}
-      />
+      />}
       <ul>{ongoingTasks}</ul>
       <hr />
       <ul>{completedTasks}</ul>

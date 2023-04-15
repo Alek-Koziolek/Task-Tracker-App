@@ -1,4 +1,5 @@
 import { useRef, useReducer } from "react";
+import styles from "./Form.module.css";
 
 function titleReducer(state, action) {
   if (action.type === "USER_INPUT") {
@@ -18,15 +19,14 @@ function Form(props) {
     value: "",
     isValid: null,
   });
-  
-  function titleChangeHandler (event){
+
+  function titleChangeHandler(event) {
     dispatchTitle({ type: "USER_INPUT", val: event.target.value });
-  };
+  }
 
-  function validateTitleHandler (event){
+  function validateTitleHandler(event) {
     dispatchTitle({ type: "INPUT_BLUR", val: event.target.value });
-  };
-
+  }
 
   function submitFormHandler(event) {
     event.preventDefault();
@@ -48,15 +48,35 @@ function Form(props) {
   const currentDate = new Date().toISOString().split("T")[0]; //YYYY-MM-DD
 
   return (
-    <form onSubmit={submitFormHandler}>
+    <form onSubmit={submitFormHandler} className={styles.form}>
       <h2>Add new Task</h2>
-      <label htmlFor="title">Title:</label>
-      <input id="title" type="text" ref={title} onChange={titleChangeHandler} onBlur={validateTitleHandler} />
-      <label htmlFor="description">Description (optional):</label>
-      <textarea id="description" ref={description} />
-      <label htmlFor="date">Due date (optional):</label>
-      <input id="date" type="date" ref={dueDate} min={currentDate} />
-      <button type="submit" disabled={!titleState.isValid && "disabled"} >Add Task</button>
+      <div>
+        <label htmlFor="title">Title:</label>
+        <input
+          id="title"
+          type="text"
+          ref={title}
+          onChange={titleChangeHandler}
+          onBlur={validateTitleHandler}
+        />
+        <label htmlFor="description">Description:</label>
+        <input
+          id="description"
+          type="text"
+          ref={description}
+        />
+        <label htmlFor="date">Due date:</label>
+        <input
+          id="date"
+          type="date"
+          ref={dueDate}
+          min={currentDate}
+        />
+      </div>
+
+      <button type="submit" disabled={!titleState.isValid && "disabled"}>
+        Add Task
+      </button>
     </form>
   );
 }

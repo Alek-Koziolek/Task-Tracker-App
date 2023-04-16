@@ -1,3 +1,5 @@
+import styles from './Task.module.css';
+
 function Task(props) {
   let isUrgent = false;
   let isCritical = false;
@@ -25,12 +27,12 @@ function Task(props) {
   }
 
   return (
-    <li>
-      {isCritical && <span>!!!AAAAAAAAAAAAAA!!!</span>}
-      {!isCritical && isUrgent && <span>!</span>}
-      <span>{props.title}</span>
-      <p>{props.description}</p>
-      <span>{props.dueDate}</span>
+    <li className={`${styles.task} ${props.completed && styles['task-completed']}`}>
+      {isCritical && !props.completed && <span>!!!AAAAAAAAAAAAAA!!!</span>}
+      {!isCritical && isUrgent && !props.completed && <span>!</span>}
+      <span className={styles.title}>{props.title}</span>
+      <p className={styles.description}>{props.description}</p>
+      <span className={styles.date}>{props.dueDate}</span>
       {props.completed ? (
         <button onClick={completionStatusChangeHandler}>Undo</button>
       ) : (

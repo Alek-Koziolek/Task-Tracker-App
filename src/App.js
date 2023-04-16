@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import Form from "./components/Form/Form";
 import TaskList from "./components/Tasks/TaskList";
+import styles from "./App.module.css";
 
 function App() {
   const [taskList, setTaskList] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(true);
 
   const fetchDataHandler = useCallback(async () => {
     setError(null);
@@ -102,7 +103,7 @@ function App() {
           },
         }
       );
-  
+
       if (!response.ok) {
         throw new Error(
           "Something went wrong... (Error " + response.status + ")"
@@ -117,14 +118,18 @@ function App() {
 
   return (
     <div>
-      <h1>Task Tracker</h1>
-      {error && <h2>{error}</h2>}
-      <Form onAddTask={addTaskHandler} />
-      <TaskList
-        tasks={taskList}
-        onCompletionStatusChange={taskCompletionStatusChangeHandler}
-        onTaskDeletion={deleteTaskHandler}
-      />
+      <h1 className={styles.header}>Task Tracker</h1>
+      {error && <h2 className={styles.error}>{error}</h2>}
+      {!error && (
+        <Fragment>
+          <Form onAddTask={addTaskHandler} />
+          <TaskList
+            tasks={taskList}
+            onCompletionStatusChange={taskCompletionStatusChangeHandler}
+            onTaskDeletion={deleteTaskHandler}
+          />
+        </Fragment>
+      )}
     </div>
   );
 }

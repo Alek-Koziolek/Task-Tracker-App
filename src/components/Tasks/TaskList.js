@@ -1,6 +1,6 @@
-import { Fragment } from "react";
 import Task from "./Task";
 import TasksInfo from "./TasksInfo";
+import Wrapper from "../UI/Wrapper";
 
 function TaskList(props) {
   const ongoingTasks = props.tasks
@@ -42,15 +42,16 @@ function TaskList(props) {
     });
 
   return (
-    <Fragment>
-      {props.tasks.length > 0 && <TasksInfo
-        completed={completedTasks.length}
-        allTasksNumber={props.tasks.length}
-      />}
+    <Wrapper>
+      {props.tasks.length > 0 && (
+        <TasksInfo
+          completed={completedTasks.length}
+          allTasksNumber={props.tasks.length}
+        />
+      )}
       <ul>{ongoingTasks}</ul>
-      <hr />
       <ul>{completedTasks}</ul>
-    </Fragment>
+    </Wrapper>
   );
 }
 

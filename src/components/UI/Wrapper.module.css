@@ -1,0 +1,22 @@
+*{
+    --primary-color: rgb(0,127,127);
+    --secondary-color: rgb(255,127,0);
+    --secondary-disabled-color: rgb(180, 120, 60);
+    --text-color: rgb(240,240,240);
+    --disabled-text-color: rgb(160, 160, 160);
+}
+
+.wrapper {
+    width: max-content;
+    margin: 0 auto;
+    padding: 2em;
+    border-radius: 5em;
+
+    background-color: var(--primary-color);
+    color: var(--text-color);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,35 @@
+* {
+  --primary-color: rgb(0, 127, 127);
+  --secondary-color: rgb(255, 127, 0);
+  --secondary-disabled-color: rgb(180, 120, 60);
+  --text-color: rgb(240, 240, 240);
+  --disabled-text-color: rgb(160, 160, 160);
+}
+
+.input {
+    margin: 2em;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 1em;
+}
+
+.input input {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+.input input:focus {
+  outline: solid 3px var(--secondary-color);
+}
+
+.input label {
+    align-self: center;
+    text-align: right;
+}
+
+.invalid input:focus {
+    outline: solid 3px red;
+    background-color: rgb(255, 180, 180);
+}

@@ -1,4 +1,5 @@
-import styles from './Task.module.css';
+import Button from "../UI/Button";
+import styles from "./Task.module.css";
 
 function Task(props) {
   let isUrgent = false;
@@ -22,23 +23,27 @@ function Task(props) {
     });
   }
 
-  function taskDeletionHandler(){
+  function taskDeletionHandler() {
     props.onTaskDeletion(props.id);
   }
 
   return (
-    <li className={`${styles.task} ${props.completed && styles['task-completed']}`}>
+    <li
+      className={`${styles.task} ${
+        props.completed && styles["task-completed"]
+      }`}
+    >
       {isCritical && !props.completed && <span>!!!AAAAAAAAAAAAAA!!!</span>}
       {!isCritical && isUrgent && !props.completed && <span>!</span>}
       <span className={styles.title}>{props.title}</span>
       <p className={styles.description}>{props.description}</p>
       <span className={styles.date}>{props.dueDate}</span>
       {props.completed ? (
-        <button onClick={completionStatusChangeHandler}>Undo</button>
+        <Button onClick={completionStatusChangeHandler}>Undo</Button>
       ) : (
-        <button onClick={completionStatusChangeHandler}>Done</button>
+        <Button onClick={completionStatusChangeHandler}>Done</Button>
       )}
-      <button onClick={taskDeletionHandler}>x</button>
+      <Button onClick={taskDeletionHandler}>x</Button>
     </li>
   );
 }

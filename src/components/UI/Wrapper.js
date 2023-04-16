@@ -1,7 +1,8 @@
 import styles from './Wrapper.module.css';
 
 function Wrapper(props){
-    return <div className={styles.wrapper}>{props.children}</div>
+    const classes = `${styles.wrapper} ${props.className}`
+    return <div className={classes}>{props.children}</div>
 }
 
 export default Wrapper;

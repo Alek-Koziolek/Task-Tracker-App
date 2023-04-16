@@ -1,0 +1,23 @@
+*{
+    --primary-color: rgb(0,127,127);
+    --secondary-color: rgb(255,127,0);
+    --secondary-disabled-color: rgb(180, 120, 60);
+    --text-color: rgb(240,240,240);
+    --disabled-text-color: rgb(160, 160, 160);
+}
+
+.button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button:disabled {
+    background-color: var(--secondary-disabled-color);
+    cursor: not-allowed;
+    color: var(--disabled-text-color);
+}

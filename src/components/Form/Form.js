@@ -1,5 +1,7 @@
 import { useRef, useReducer } from "react";
+import Button from "../UI/Button";
 import styles from "./Form.module.css";
+import Input from "../UI/Input";
 
 function titleReducer(state, action) {
   if (action.type === "USER_INPUT") {
@@ -11,7 +13,6 @@ function titleReducer(state, action) {
 }
 
 function Form(props) {
-  const title = useRef();
   const description = useRef();
   const dueDate = useRef();
 
@@ -33,14 +34,14 @@ function Form(props) {
 
     props.onAddTask({
       id: Math.random(),
-      title: title.current.value,
+      title: titleState.value,
       description: description.current.value,
       date: new Date().toISOString(),
       dueDate: dueDate.current.value,
       completed: false,
     });
 
-    title.current.value = "";
+    titleState.value = "";
     description.current.value = "";
     dueDate.current.value = "";
   }
@@ -51,32 +52,24 @@ function Form(props) {
     <form onSubmit={submitFormHandler} className={styles.form}>
       <h2>Add new Task</h2>
       <div>
-        <label htmlFor="title">Title:</label>
-        <input
+        <Input
           id="title"
+          label="Title:"
           type="text"
-          ref={title}
+          value={titleState.value}
           onChange={titleChangeHandler}
           onBlur={validateTitleHandler}
+          isValid={titleState.isValid}
         />
         <label htmlFor="description">Description:</label>
-        <input
-          id="description"
-          type="text"
-          ref={description}
-        />
+        <input  ref={description} />
         <label htmlFor="date">Due date:</label>
-        <input
-          id="date"
-          type="date"
-          ref={dueDate}
-          min={currentDate}
-        />
+        <input id="date" type="date" ref={dueDate} min={currentDate} />
       </div>
 
-      <button type="submit" disabled={!titleState.isValid && "disabled"}>
+      <Button type="submit" disabled={!titleState.isValid && "disabled"}>
         Add Task
-      </button>
+      </Button>
     </form>
   );
 }

@@ -1,7 +1,9 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
+import LoginContext from "./context/login-context";
 import Form from "./components/Form/Form";
 import TaskList from "./components/Tasks/TaskList";
 import styles from "./App.module.css";
+import LoginHeader from "./components/Login/LoginHeader";
 
 function App() {
   const [taskList, setTaskList] = useState([]);
@@ -117,8 +119,11 @@ function App() {
   }
 
   return (
-    <div>
-      <h1 className={styles.header}>Task Tracker</h1>
+    <LoginContext.Provider value={{ isLoggedIn: true, username: "Alek" }}>
+      <header className={styles.header}>
+        <h1>Task Tracker</h1>
+        <LoginHeader />
+      </header>
       {error && <h2 className={styles.error}>{error}</h2>}
       {!error && (
         <Fragment>
@@ -130,7 +135,7 @@ function App() {
           />
         </Fragment>
       )}
-    </div>
+    </LoginContext.Provider>
   );
 }
 

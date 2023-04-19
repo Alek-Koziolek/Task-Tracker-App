@@ -1,4 +1,4 @@
-import { useRef, useReducer } from "react";
+import { useReducer, useState } from "react";
 import Button from "../UI/Button";
 import styles from "./Form.module.css";
 import Input from "../UI/Input";
@@ -12,14 +12,29 @@ function titleReducer(state, action) {
   return { value: "", isValid: false };
 }
 
-function Form(props) {
-  const description = useRef();
-  const dueDate = useRef();
+function descriptionReducer(state, action) {
+  if (action.type === "USER_INPUT") {
+    return { value: action.val, isValid: action.val.trim().length > 0 };
+  } else if (action.type === "INPUT_BLUR") {
+    return { value: state.value, isValid: state.value.trim().length > 0 };
+  }
+  return { value: "", isValid: false };
+}
 
+function Form(props) {
   const [titleState, dispatchTitle] = useReducer(titleReducer, {
     value: "",
     isValid: null,
   });
+  const [descriptionState, dispatchDescription] = useReducer(
+    descriptionReducer,
+    {
+      value: "",
+      isValid: null,
+    }
+  );
+
+  const [dueDate, setDueDate] = useState("");
 
   function titleChangeHandler(event) {
     dispatchTitle({ type: "USER_INPUT", val: event.target.value });
@@ -29,20 +44,31 @@ function Form(props) {
     dispatchTitle({ type: "INPUT_BLUR", val: event.target.value });
   }
 
+  function descriptionChangeHandler(event) {
+    dispatchDescription({ type: "USER_INPUT", val: event.target.value });
+  }
+
+  function validateDescriptionHandler(event) {
+    dispatchDescription({ type: "INPUT_BLUR", val: event.target.value });
+  }
+
+  function dateChangeHandler(event) {
+    setDueDate(event.target.value);
+  }
+
   function submitFormHandler(event) {
     event.preventDefault();
 
     props.onAddTask({
       id: Math.random(),
       title: titleState.value,
-      description: description.current.value,
-      date: new Date().toISOString(),
-      dueDate: dueDate.current.value,
+      description: descriptionState.value,
+      dueDate: dueDate,
       completed: false,
     });
 
     titleState.value = "";
-    description.current.value = "";
+    descriptionState.value = "";
     dueDate.current.value = "";
   }
 
@@ -61,13 +87,34 @@ function Form(props) {
           onBlur={validateTitleHandler}
           isValid={titleState.isValid}
         />
-        <label htmlFor="description">Description:</label>
-        <input  ref={description} />
-        <label htmlFor="date">Due date:</label>
-        <input id="date" type="date" ref={dueDate} min={currentDate} />
+        <Input
+          id="description"
+          label="Description:"
+          type="text"
+          value={descriptionState.value}
+          onChange={descriptionChangeHandler}
+          onBlur={validateDescriptionHandler}
+          isValid={descriptionState.isValid}
+        />
+        <Input
+          id="date"
+          label="Due date:"
+          type="date"
+          value={dueDate}
+          onChange={dateChangeHandler}
+          min={currentDate}
+          isValid={dueDate !== ""}
+        />
       </div>
 
-      <Button type="submit" disabled={!titleState.isValid && "disabled"}>
+      <Button
+        type="submit"
+        disabled={
+          !titleState.isValid ||
+          !descriptionState.isValid ||
+          (dueDate === "" && "disabled")
+        }
+      >
         Add Task
       </Button>
     </form>

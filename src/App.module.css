@@ -6,7 +6,18 @@
   --disabled-text-color: rgb(160, 160, 160);
 }
 
-.header {
+header {
+  height: min-content;
+  width: 100vw;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  overflow: hidden;
+}
+
+.header h1 {
   height: 5rem;
   width: max-content;
   padding: 0 1em 0 0.5em;

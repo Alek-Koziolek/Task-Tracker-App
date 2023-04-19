@@ -1,0 +1,27 @@
+* {
+  --primary-color: rgb(0, 127, 127);
+  --secondary-color: rgb(255, 127, 0);
+  --secondary-disabled-color: rgb(180, 120, 60);
+  --text-color: rgb(240, 240, 240);
+  --disabled-text-color: rgb(160, 160, 160);
+}
+
+.login-area {
+  height: 5rem;
+  width: max-content;
+  padding: 0 0.5em 0 1em;
+  border-radius: 5rem 0 0 5rem;
+  text-align: right;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+
+  color: var(--text-color);
+  font-size: 1.5em;
+  background-color: var(--primary-color);
+}
+
+.login-area p {
+    margin-right: 1em;
+}

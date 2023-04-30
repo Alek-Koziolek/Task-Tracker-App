@@ -1,31 +1,24 @@
-*{
-    --primary-color: rgb(0,127,127);
-    --secondary-color: rgb(255,127,0);
-    --secondary-disabled-color: rgb(180, 120, 60);
-    --text-color: rgb(240,240,240);
-    --disabled-text-color: rgb(160, 160, 160);
-}
-
 .form {
-    width: 40vw;
-    margin: 0 auto;
-    padding: 2em 0;
-    border-radius: 5em 0;
-
-    background-color: var(--primary-color);
-    color: var(--text-color);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
+    margin: 0.5rem auto 2rem auto;
+    animation: borderWave 5s 1;
+}
+.form:hover{
     animation: borderWave 5s infinite ease-in-out;
 }
 
 @keyframes borderWave {
-    0% {border-radius: 0 5em}
-    50% {border-radius: 5em 0}
-    100% {border-radius: 0 5em}
+    0% {border-radius: 5em 5em 5em 5em}
+    17% {border-radius: 0 5em 5em 5em}
+    33% {border-radius: 5em 0 5em 5em}
+    49% {border-radius: 5em 5em 0 5em}
+    65% {border-radius: 5em 5em 5em 0}
+    81% {border-radius: 0 5em 5em 5em}
+    100% {border-radius: 5em 5em 5em 5em}
 }
 
+.form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

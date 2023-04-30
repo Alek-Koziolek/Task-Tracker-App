@@ -29,15 +29,15 @@ function Task(props) {
 
   return (
     <li
-      className={`${styles.task} ${
-        props.completed && styles["task-completed"]
-      }`}
+      className={`${styles.task} ${props.completed && styles["task-completed"]
+        }`}
     >
-      {isCritical && !props.completed && <span>!!!AAAAAAAAAAAAAA!!!</span>}
-      {!isCritical && isUrgent && !props.completed && <span>!</span>}
+      {isCritical && !props.completed && <span>!CRITICAL! </span>}
+      {!isCritical && isUrgent && !props.completed && <span>Urgent! </span>}
       <span className={styles.title}>{props.title}</span>
       <p className={styles.description}>{props.description}</p>
-      <span className={styles.date}>{props.dueDate}</span>
+      <span className={styles.date}>Due date: {props.dueDate}</span>
+      <br />
       {props.completed ? (
         <Button onClick={completionStatusChangeHandler}>Undo</Button>
       ) : (

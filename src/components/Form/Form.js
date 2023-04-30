@@ -1,5 +1,6 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import Button from "../UI/Button";
+import Wrapper from "../UI/Wrapper";
 import styles from "./Form.module.css";
 import Input from "../UI/Input";
 
@@ -21,6 +22,15 @@ function descriptionReducer(state, action) {
   return { value: "", isValid: false };
 }
 
+function dateReducer(state, action) {
+  if (action.type === "USER_INPUT") {
+    return { value: action.val, isValid: action.val.trim().length > 0 };
+  } else if (action.type === "INPUT_BLUR") {
+    return { value: state.value, isValid: state.value.trim().length > 0 };
+  }
+  return { value: "", isValid: false };
+}
+
 function Form(props) {
   const [titleState, dispatchTitle] = useReducer(titleReducer, {
     value: "",
@@ -33,8 +43,13 @@ function Form(props) {
       isValid: null,
     }
   );
-
-  const [dueDate, setDueDate] = useState("");
+  const [dateState, dispatchDate] = useReducer(
+    dateReducer,
+    {
+      value: "",
+      isValid: null,
+    }
+  );
 
   function titleChangeHandler(event) {
     dispatchTitle({ type: "USER_INPUT", val: event.target.value });
@@ -53,7 +68,11 @@ function Form(props) {
   }
 
   function dateChangeHandler(event) {
-    setDueDate(event.target.value);
+    dispatchDate({ type: "USER_INPUT", val: event.target.value });
+  }
+
+  function validateDateHandler(event) {
+    dispatchDate({ type: "INPUT_BLUR", val: event.target.value });
   }
 
   function submitFormHandler(event) {
@@ -63,61 +82,65 @@ function Form(props) {
       id: Math.random(),
       title: titleState.value,
       description: descriptionState.value,
-      dueDate: dueDate,
+      dueDate: dateState.value,
       completed: false,
     });
 
     titleState.value = "";
     descriptionState.value = "";
-    dueDate.current.value = "";
+    dateState.value = "";
   }
 
   const currentDate = new Date().toISOString().split("T")[0]; //YYYY-MM-DD
 
   return (
-    <form onSubmit={submitFormHandler} className={styles.form}>
-      <h2>Add new Task</h2>
-      <div>
-        <Input
-          id="title"
-          label="Title:"
-          type="text"
-          value={titleState.value}
-          onChange={titleChangeHandler}
-          onBlur={validateTitleHandler}
-          isValid={titleState.isValid}
-        />
-        <Input
-          id="description"
-          label="Description:"
-          type="text"
-          value={descriptionState.value}
-          onChange={descriptionChangeHandler}
-          onBlur={validateDescriptionHandler}
-          isValid={descriptionState.isValid}
-        />
-        <Input
-          id="date"
-          label="Due date:"
-          type="date"
-          value={dueDate}
-          onChange={dateChangeHandler}
-          min={currentDate}
-          isValid={dueDate !== ""}
-        />
-      </div>
+    <Wrapper className={styles.form}>
+      <form onSubmit={submitFormHandler}>
+        <h2>Add new Task</h2>
+        <div>
+          <Input
+            id="title"
+            label="Title:"
+            type="text"
+            value={titleState.value}
+            onChange={titleChangeHandler}
+            onBlur={validateTitleHandler}
+            isValid={titleState.isValid}
+          />
+          <Input
+            id="description"
+            label="Description:"
+            type="text"
+            value={descriptionState.value}
+            onChange={descriptionChangeHandler}
+            onBlur={validateDescriptionHandler}
+            isValid={descriptionState.isValid}
+          />
+          <Input
+            id="date"
+            label="Due date:"
+            type="date"
+            value={dateState.value}
+            onChange={dateChangeHandler}
+            onBlur={validateDateHandler}
+            min={currentDate}
+            isValid={dateState.isValid}
+          />
+        </div>
 
-      <Button
-        type="submit"
-        disabled={
-          !titleState.isValid ||
-          !descriptionState.isValid ||
-          (dueDate === "" && "disabled")
-        }
-      >
-        Add Task
-      </Button>
-    </form>
+        <Button
+          type="submit"
+          disabled={
+            !titleState.isValid ||
+            !descriptionState.isValid ||
+            !dateState.isValid
+          }
+        >
+          Add Task
+        </Button>
+      </form>
+    </Wrapper>
+
   );
 }
 

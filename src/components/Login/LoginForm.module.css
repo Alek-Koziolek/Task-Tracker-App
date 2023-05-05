@@ -1,3 +1,10 @@
+*{
+  --primary-color: rgb(0,127,127);
+  --secondary-color: rgb(255,127,0);
+  --secondary-disabled-color: rgb(180, 120, 60);
+  --text-color: rgb(240,240,240);
+  --disabled-text-color: rgb(160, 160, 160);
+}
 .login-form {
   position: fixed;
   top: 50%;
@@ -6,4 +13,13 @@
   z-index: 100;
   overflow: hidden;
   text-align: center;
+  width: min-content;
+}
+
+.login-form p {
+  margin: -1em 0 1em 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: orangered;
+  flex-wrap: wrap;
 }

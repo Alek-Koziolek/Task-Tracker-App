@@ -8,6 +8,10 @@ import LoginHeader from "./components/Login/LoginHeader";
 function App() {
   const [taskList, setTaskList] = useState([]);
   const [error, setError] = useState(true);
+  const [loginState, setLoginState] = useState({
+    isLoggedIn: false,
+    username: "",
+  });
 
   const fetchDataHandler = useCallback(async () => {
     setError(null);
@@ -118,14 +122,30 @@ function App() {
     }
   }
 
+  function loginHandler(username) {
+    setLoginState({ isLoggedIn: true, username: username });
+  }
+
+  function logoutHandler() {
+    setLoginState({ isLoggedIn: false, username: "" });
+  }
+
   return (
-    <LoginContext.Provider value={{ isLoggedIn: false, username: "Alek" }}>
+    <LoginContext.Provider
+      value={{
+        isLoggedIn: loginState.isLoggedIn,
+        username: loginState.username,
+        onLogin: loginHandler,
+        onLogout: logoutHandler,
+      }}
+    >
       <header className={styles.header}>
         <h1>Task Tracker</h1>
         <LoginHeader />
       </header>
       {error && <h2 className={styles.error}>{error}</h2>}
-      {!error && (
+      {!loginState.isLoggedIn && <h2 className={styles.login}>Please log in to use Task Tracker</h2>}
+      {!error && loginState.isLoggedIn && (
         <Fragment>
           <Form onAddTask={addTaskHandler} />
           <TaskList

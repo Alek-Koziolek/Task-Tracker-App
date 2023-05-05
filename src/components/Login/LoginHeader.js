@@ -10,8 +10,8 @@ const ctx = useContext(LoginContext);
 const [isModalVisible, setIsModalVisible] = useState(false);
 
 function loginHandler(){
-    //ctx.isLoggedIn = !ctx.isLoggedIn;
-    setIsModalVisible(prevState => {return !prevState});
+    if(!ctx.isLoggedIn) setIsModalVisible(prevState => {return !prevState});
+    else ctx.onLogout();
 }
 
     return(<div className={styles['login-area']}>

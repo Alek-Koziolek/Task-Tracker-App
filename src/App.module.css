@@ -47,3 +47,18 @@ header {
   color: var(--text-color);
   background-color: var(--secondary-color);
 }
+
+.login {
+  margin: 2em auto;
+  width: max-content;
+  padding: 1em;
+  border-radius: 5rem;
+  text-align: right;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+
+  color: var(--text-color);
+  background-color: var(--primary-color);
+}

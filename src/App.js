@@ -119,7 +119,7 @@ function App() {
   }
 
   return (
-    <LoginContext.Provider value={{ isLoggedIn: true, username: "Alek" }}>
+    <LoginContext.Provider value={{ isLoggedIn: false, username: "Alek" }}>
       <header className={styles.header}>
         <h1>Task Tracker</h1>
         <LoginHeader />

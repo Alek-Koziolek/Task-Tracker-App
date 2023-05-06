@@ -64,7 +64,7 @@ function LoginForm(props) {
     setUsersList([]);
     try {
       const response = await fetch(
-        "https://task-tracker-ak-default-rtdb.europe-west1.firebasedatbase.app/users.json"
+        "https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users.json"
       );
 
       if (!response.ok) {

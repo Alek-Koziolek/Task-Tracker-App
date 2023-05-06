@@ -27,3 +27,7 @@
   min-width: max-content;
   margin: 1em 0;
 }
+
+.error {
+  color: var(--secondary-color);
+}

@@ -1,4 +1,4 @@
-import { useContext, useReducer } from "react";
+import { useState, useContext, useReducer, useCallback, useEffect } from "react";
 import Button from "../UI/Button";
 import Wrapper from "../UI/Wrapper";
 import styles from "./LoginForm.module.css";
@@ -43,6 +43,68 @@ function LoginForm(props) {
     isValid: null,
   });
 
+  const [error, setError] = useState(null);
+  const [usersList, setUsersList] = useState([]);
+
+  const fetchUsersData = useCallback(async () => {
+    setError(null);
+    setUsersList([]);
+    try {
+      const response = await fetch(
+        "https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users.json"
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Something went wrong... (Error " + response.status + ")"
+        );
+      }
+      const users = await response.json();
+
+      const fetchedUsers = [];
+      for (const key in users) {
+        fetchedUsers.push({
+          key: key,
+          id: users[key].id,
+          username: users[key].username,
+          password: users[key].password,
+        });
+      }
+      setUsersList(fetchedUsers);
+    } catch (error) {
+      setError(error.message);
+    }
+  }, []);
+
+  async function addUserData() {
+    setError(null);
+    try {
+      const response = await fetch(
+        "https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users.json",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            id: Math.random(),
+            username: usernameState.value,
+            password: passwordState.value,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Something went wrong... (Error " + response.status + ")"
+        );
+      }
+      fetchUsersData();
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   function usernameChangeHandler(event) {
     dispatchUsername({ type: "USER_INPUT", val: event.target.value });
   }
@@ -61,10 +123,23 @@ function LoginForm(props) {
 
   const ctx = useContext(LoginContext);
 
+  useEffect(() => {
+    if(!ctx.isLoggedIn) fetchUsersData();
+  }, [ctx.isLoggedIn, fetchUsersData]);
+
   function submitFormHandler(event) {
     event.preventDefault();
     props.onLogin();
-    if (!ctx.isLoggedIn) ctx.onLogin(usernameState.value);
+    fetchUsersData();
+    console.log(usersList);
+    if(usersList.find(user => user.username === usernameState.value)) console.log('User exists');
+    else {
+      console.log('User does not exist');
+      addUserData();
+  }
+    if (!ctx.isLoggedIn) {
+      ctx.onLogin(usernameState.value);
+    }
 
     usernameState.value = "";
     passwordState.value = "";

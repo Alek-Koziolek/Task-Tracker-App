@@ -7,7 +7,7 @@ import LoginHeader from "./components/Login/LoginHeader";
 
 function App() {
   const [taskList, setTaskList] = useState([]);
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(null);
   const [loginState, setLoginState] = useState({
     isLoggedIn: false,
     username: "",
@@ -15,6 +15,7 @@ function App() {
 
   const fetchDataHandler = useCallback(async () => {
     setError(null);
+    setTaskList([]);
     try {
       const response = await fetch(
         "https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
@@ -44,8 +45,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchDataHandler();
-  }, [fetchDataHandler]);
+    if(loginState.isLoggedIn) fetchDataHandler();
+  }, [loginState.isLoggedIn, fetchDataHandler]);
 
   async function addTaskHandler(task) {
     setError(null);

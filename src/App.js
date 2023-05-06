@@ -11,6 +11,7 @@ function App() {
   const [loginState, setLoginState] = useState({
     isLoggedIn: false,
     username: "",
+    key: "",
   });
 
   const fetchDataHandler = useCallback(async () => {
@@ -18,7 +19,7 @@ function App() {
     setTaskList([]);
     try {
       const response = await fetch(
-        "https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/tasks.json"
+        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users/${loginState.key}/tasks.json`
       );
 
       if (!response.ok) {
@@ -42,17 +43,17 @@ function App() {
     } catch (error) {
       setError(error.message);
     }
-  }, []);
+  }, [loginState.key]);
 
   useEffect(() => {
-    if(loginState.isLoggedIn) fetchDataHandler();
+    if (loginState.isLoggedIn) fetchDataHandler();
   }, [loginState.isLoggedIn, fetchDataHandler]);
 
   async function addTaskHandler(task) {
     setError(null);
     try {
       const response = await fetch(
-        "https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/tasks.json",
+        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users/${loginState.key}/tasks.json`,
         {
           method: "POST",
           body: JSON.stringify(task),
@@ -77,7 +78,7 @@ function App() {
     setError(null);
     try {
       const response = await fetch(
-        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/tasks/${task.id}.json`,
+        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users/${loginState.key}/tasks/${task.id}.json`,
         {
           method: "PATCH",
           body: JSON.stringify(task),
@@ -102,7 +103,7 @@ function App() {
     setError(null);
     try {
       const response = await fetch(
-        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/tasks/${id}.json`,
+        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users/${loginState.key}tasks/${id}.json`,
         {
           method: "DELETE",
           headers: {
@@ -123,12 +124,12 @@ function App() {
     }
   }
 
-  function loginHandler(username) {
-    setLoginState({ isLoggedIn: true, username: username });
+  function loginHandler(username, key) {
+    setLoginState({ isLoggedIn: true, username: username, key: key });
   }
 
   function logoutHandler() {
-    setLoginState({ isLoggedIn: false, username: "" });
+    setLoginState({ isLoggedIn: false, username: "", key: "" });
   }
 
   return (
@@ -136,6 +137,7 @@ function App() {
       value={{
         isLoggedIn: loginState.isLoggedIn,
         username: loginState.username,
+        key: loginState.key,
         onLogin: loginHandler,
         onLogout: logoutHandler,
       }}
@@ -145,7 +147,9 @@ function App() {
         <LoginHeader />
       </header>
       {error && <h2 className={styles.error}>{error}</h2>}
-      {!loginState.isLoggedIn && <h2 className={styles.login}>Please log in to use Task Tracker</h2>}
+      {!loginState.isLoggedIn && (
+        <h2 className={styles.login}>Please log in to use Task Tracker</h2>
+      )}
       {!error && loginState.isLoggedIn && (
         <Fragment>
           <Form onAddTask={addTaskHandler} />

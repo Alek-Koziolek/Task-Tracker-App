@@ -1,4 +1,10 @@
-import { useState, useContext, useReducer, useCallback, useEffect } from "react";
+import {
+  useState,
+  useContext,
+  useReducer,
+  useCallback,
+  useEffect,
+} from "react";
 import Button from "../UI/Button";
 import Wrapper from "../UI/Wrapper";
 import styles from "./LoginForm.module.css";
@@ -124,25 +130,26 @@ function LoginForm(props) {
   const ctx = useContext(LoginContext);
 
   useEffect(() => {
-    if(!ctx.isLoggedIn) fetchUsersData();
+    if (!ctx.isLoggedIn) fetchUsersData();
   }, [ctx.isLoggedIn, fetchUsersData]);
 
   function submitFormHandler(event) {
     event.preventDefault();
     props.onLogin();
     fetchUsersData();
-    console.log(usersList);
-    if(usersList.find(user => user.username === usernameState.value)) console.log('User exists');
-    else {
-      console.log('User does not exist');
+    const currentUser = usersList.find(
+      (user) => user.username === usernameState.value
+    );
+    if (currentUser) {
+      if (!ctx.isLoggedIn) {
+        ctx.onLogin(usernameState.value, currentUser.key);
+      }
+      usernameState.value = "";
+      passwordState.value = "";
+    } else {
+      console.log("User does not exist");
       addUserData();
-  }
-    if (!ctx.isLoggedIn) {
-      ctx.onLogin(usernameState.value);
     }
-
-    usernameState.value = "";
-    passwordState.value = "";
   }
 
   return (

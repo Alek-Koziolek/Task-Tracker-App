@@ -54,7 +54,10 @@ function LoginForm(props) {
   const [error, setError] = useState(null);
   const [usersList, setUsersList] = useState([]);
   const [signUp, setSignUp] = useState(false);
-  const [displayMessage, setDisplayMessage] = useState(false);
+  const [displayMessage, setDisplayMessage] = useState({
+    valid: false,
+    correct: false,
+  });
 
   const fetchUsersData = useCallback(async () => {
     setError(null);
@@ -129,7 +132,10 @@ function LoginForm(props) {
 
   function validatePasswordHandler(event) {
     dispatchPassword({ type: "INPUT_BLUR", val: event.target.value });
-    setDisplayMessage(true);
+    setDisplayMessage({
+      valid: true,
+      correct: false,
+    });
   }
 
   const ctx = useContext(LoginContext);
@@ -145,34 +151,46 @@ function LoginForm(props) {
       (user) => user.username === usernameState.value
     );
     if (currentUser) {
-      if (!ctx.isLoggedIn) {
+      if (passwordState.value === currentUser.password) {
         ctx.onLogin(usernameState.value, currentUser.key);
+        usernameState.value = "";
+        passwordState.value = "";
+        props.onLogin();
+      } else {
+        setDisplayMessage({
+          valid: false,
+          correct: true,
+        });
       }
-      usernameState.value = "";
-      passwordState.value = "";
-      props.onLogin();
     } else {
       setSignUp(true);
-      // addUserData();
     }
-    setDisplayMessage(false);
   }
 
   function denyLoginHandler() {
     props.onLogin();
-    setDisplayMessage(false);
+    setDisplayMessage({
+      valid: false,
+      correct: false,
+    });
   }
 
   function addUserHandler() {
     addUserData();
     setSignUp(false);
-    setDisplayMessage(false);
+    setDisplayMessage({
+      valid: false,
+      correct: false,
+    });
   }
 
   function denySignUpHandler() {
     props.onLogin();
     setSignUp(false);
-    setDisplayMessage(false);
+    setDisplayMessage({
+      valid: false,
+      correct: false,
+    });
   }
 
   return (
@@ -181,7 +199,9 @@ function LoginForm(props) {
         {signUp ? (
           <Fragment>
             <h3>
-              It seems that You are a new user.<br/>Would you like to sign up?
+              It seems that You are a new user.
+              <br />
+              Would you like to sign up?
             </h3>
             <Button onClick={addUserHandler}>Yes</Button>
             <Button onClick={denySignUpHandler}>No</Button>
@@ -209,12 +229,13 @@ function LoginForm(props) {
                 isValid={passwordState.isValid}
               />
             </div>
-            {!passwordState.isValid && displayMessage && (
+            {!passwordState.isValid && displayMessage.valid && (
               <p>
                 Password must contain at least one lowercase letter, one capital
                 letter and one number.
               </p>
             )}
+            {displayMessage.correct && <p>Password is incorrect.</p>}
             <Button
               type="submit"
               disabled={!usernameState.isValid || !passwordState.isValid}

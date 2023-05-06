@@ -4,6 +4,7 @@ import {
   useReducer,
   useCallback,
   useEffect,
+  Fragment,
 } from "react";
 import Button from "../UI/Button";
 import Wrapper from "../UI/Wrapper";
@@ -21,17 +22,18 @@ function usernameReducer(state, action) {
 }
 function passwordReducer(state, action) {
   if (action.type === "USER_INPUT") {
-    return { value: action.val, isValid: passwordValidityChaeck(action.val) };
+    return { value: action.val, isValid: passwordValidityCheck(action.val) };
   } else if (action.type === "INPUT_BLUR") {
-    return { value: state.value, isValid: passwordValidityChaeck(action.val) };
+    return { value: state.value, isValid: passwordValidityCheck(action.val) };
   }
   return { value: "", isValid: false };
 }
 
-function passwordValidityChaeck(password) {
+function passwordValidityCheck(password) {
   if (
     password.trim().length > 0 &&
     password.match(/.*[A-Z].*/g) &&
+    password.match(/.*[a-z].*/g) &&
     !password.match(/.*\s.*/g) &&
     password.match(/.*[0-9].*/)
   )
@@ -51,6 +53,8 @@ function LoginForm(props) {
 
   const [error, setError] = useState(null);
   const [usersList, setUsersList] = useState([]);
+  const [signUp, setSignUp] = useState(false);
+  const [displayMessage, setDisplayMessage] = useState(false);
 
   const fetchUsersData = useCallback(async () => {
     setError(null);
@@ -125,6 +129,7 @@ function LoginForm(props) {
 
   function validatePasswordHandler(event) {
     dispatchPassword({ type: "INPUT_BLUR", val: event.target.value });
+    setDisplayMessage(true);
   }
 
   const ctx = useContext(LoginContext);
@@ -135,7 +140,6 @@ function LoginForm(props) {
 
   function submitFormHandler(event) {
     event.preventDefault();
-    props.onLogin();
     fetchUsersData();
     const currentUser = usersList.find(
       (user) => user.username === usernameState.value
@@ -146,48 +150,80 @@ function LoginForm(props) {
       }
       usernameState.value = "";
       passwordState.value = "";
+      props.onLogin();
     } else {
-      console.log("User does not exist");
-      addUserData();
+      setSignUp(true);
+      // addUserData();
     }
+    setDisplayMessage(false);
+  }
+
+  function denyLoginHandler() {
+    props.onLogin();
+    setDisplayMessage(false);
+  }
+
+  function addUserHandler() {
+    addUserData();
+    setSignUp(false);
+    setDisplayMessage(false);
+  }
+
+  function denySignUpHandler() {
+    props.onLogin();
+    setSignUp(false);
+    setDisplayMessage(false);
   }
 
   return (
     <Wrapper className={styles["login-form"]}>
       <form onSubmit={submitFormHandler}>
-        <h2>Login</h2>
-        <div>
-          <Input
-            id="username"
-            label="Username:"
-            type="text"
-            value={usernameState.value}
-            onChange={usernameChangeHandler}
-            onBlur={validateUsernameHandler}
-            isValid={usernameState.isValid}
-          />
-          <Input
-            id="password"
-            label="Password:"
-            type="password"
-            value={passwordState.value}
-            onChange={passwordChangeHandler}
-            onBlur={validatePasswordHandler}
-            isValid={passwordState.isValid}
-          />
-        </div>
-        {!passwordState.isValid && (
-          <p>
-            Password must contain at least one lowercase letter, one capital
-            letter and one number.
-          </p>
+        {signUp ? (
+          <Fragment>
+            <h3>
+              It seems that You are a new user.<br/>Would you like to sign up?
+            </h3>
+            <Button onClick={addUserHandler}>Yes</Button>
+            <Button onClick={denySignUpHandler}>No</Button>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <h2>Login</h2>
+            <div>
+              <Input
+                id="username"
+                label="Username:"
+                type="text"
+                value={usernameState.value}
+                onChange={usernameChangeHandler}
+                onBlur={validateUsernameHandler}
+                isValid={usernameState.isValid}
+              />
+              <Input
+                id="password"
+                label="Password:"
+                type="password"
+                value={passwordState.value}
+                onChange={passwordChangeHandler}
+                onBlur={validatePasswordHandler}
+                isValid={passwordState.isValid}
+              />
+            </div>
+            {!passwordState.isValid && displayMessage && (
+              <p>
+                Password must contain at least one lowercase letter, one capital
+                letter and one number.
+              </p>
+            )}
+            <Button
+              type="submit"
+              disabled={!usernameState.isValid || !passwordState.isValid}
+            >
+              Login
+            </Button>
+            <Button onClick={denyLoginHandler}>Cancel</Button>
+          </Fragment>
         )}
-        <Button
-          type="submit"
-          disabled={!usernameState.isValid || !passwordState.isValid}
-        >
-          Login
-        </Button>
       </form>
     </Wrapper>
   );

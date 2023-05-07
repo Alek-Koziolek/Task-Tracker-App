@@ -1,5 +1,5 @@
 {
-  "homepage": "https://alek-koziolek.github.io/Task-Tracker-App/",
+  "homepage": "https://alek-koziolek.github.io/task-tracker-app/",
   "name": "task-tracker-app",
   "version": "0.1.0",
   "private": false,
@@ -39,7 +39,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^5.0.0",
-    "react-router-dom": "^6.11.1"
+    "gh-pages": "^5.0.0"
   }
 }

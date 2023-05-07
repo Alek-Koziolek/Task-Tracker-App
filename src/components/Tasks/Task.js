@@ -1,14 +1,15 @@
+import { useState } from "react";
 import Button from "../UI/Button";
 import styles from "./Task.module.css";
 
 function Task(props) {
   let isUrgent = false;
   let isCritical = false;
+  const [clicked, setClicked] = useState(false);
 
   if (props.dueDate !== undefined) {
-    const timeLeft = Math.floor(
-      (new Date(props.dueDate) - Date.now()) / (1000 * 60 * 60 * 24)
-    );
+    const timeLeft = Math.round((new Date(props.dueDate) - Date.now()) / (1000 * 60 * 60 * 24)*100 
+    )/100;
     isUrgent = timeLeft <= 1;
     isCritical = timeLeft <= 0;
   }
@@ -27,23 +28,41 @@ function Task(props) {
     props.onTaskDeletion(props.id);
   }
 
+  function taskClickHandler(){
+    setClicked(prevState => !prevState);
+  }
+
   return (
     <li
-      className={`${styles.task} ${props.completed && styles["task-completed"]
-        }`}
+      className={`${styles.task} ${
+        props.completed && styles["task-completed"]
+      } ${clicked && styles.clicked}
+      ${!isCritical && isUrgent && !props.completed && styles.urgent}
+      ${isCritical && !props.completed && styles.critical}`}
+      onClick={taskClickHandler}
     >
-      {isCritical && !props.completed && <span>!CRITICAL! </span>}
-      {!isCritical && isUrgent && !props.completed && <span>Urgent! </span>}
       <span className={styles.title}>{props.title}</span>
+      <span className={styles.date}>Due: {props.dueDate}</span>
       <p className={styles.description}>{props.description}</p>
-      <span className={styles.date}>Due date: {props.dueDate}</span>
       <br />
       {props.completed ? (
-        <Button onClick={completionStatusChangeHandler}>Undo</Button>
+        <Button
+          className={styles["done-btn"]}
+          onClick={completionStatusChangeHandler}
+        >
+          Undo
+        </Button>
       ) : (
-        <Button onClick={completionStatusChangeHandler}>Done</Button>
+        <Button
+          className={styles["done-btn"]}
+          onClick={completionStatusChangeHandler}
+        >
+          Done
+        </Button>
       )}
-      <Button onClick={taskDeletionHandler}>x</Button>
+      <Button className={styles["delete-btn"]} onClick={taskDeletionHandler}>
+        Delete
+      </Button>
     </li>
   );
 }

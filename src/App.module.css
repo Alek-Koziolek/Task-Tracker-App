@@ -14,23 +14,26 @@ header {
   flex-direction: row;
   justify-content: space-between;
 
-  overflow: hidden;
 }
 
-.header h1 {
+.title {
   height: 5rem;
   width: max-content;
-  padding: 0 1em 0 0.5em;
+  padding: 0 1.5em 0 0.7em;
   border-radius: 0 5rem 5rem 0;
-  text-align: right;
-  right: 0;
-
-  display: flex;
-  align-items: center;
-
   color: var(--text-color);
-  font-size: 2.5em;
   background-color: var(--primary-color);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.title h1 {
+  font-size: 2.5em;
+}
+
+.title p a:visited{
+  color: inherit;
 }
 
 .error {
@@ -49,7 +52,10 @@ header {
 }
 
 .login {
-  margin: 2em auto;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: max-content;
   padding: 1em;
   border-radius: 5rem;
@@ -61,4 +67,34 @@ header {
 
   color: var(--text-color);
   background-color: var(--primary-color);
+}
+
+
+@media (max-width: 600px){
+
+  header {
+    height: max-content;
+  }
+
+  .title{
+    width: min-content;
+    height: 140px;
+    justify-content: center;
+  }
+
+  .title h1{
+    font-size: 2.2rem;
+  }
+  .title p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .login {
+    border-radius: 0;
+    width: 100vw;
+    margin-left: -1px;
+    text-align: center;
+  }
 }

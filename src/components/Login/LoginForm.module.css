@@ -7,7 +7,7 @@
 }
 .login-form {
   position: fixed;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
@@ -30,4 +30,11 @@
 
 .error {
   color: var(--secondary-color);
+}
+
+@media (max-width: 420px) {
+  .login-form {
+    width: 100vw;
+    border-radius: 0;
+  }
 }

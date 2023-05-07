@@ -1,7 +1,8 @@
 import Task from "./Task";
 import TasksInfo from "./TasksInfo";
 import Wrapper from "../UI/Wrapper";
-import styles from './TaskList.module.css';
+import styles from "./TaskList.module.css";
+import { Fragment } from "react";
 
 function TaskList(props) {
   const ongoingTasks = props.tasks
@@ -44,14 +45,19 @@ function TaskList(props) {
 
   return (
     <Wrapper className={styles.wrapper}>
-      {props.tasks.length > 0 && (
-        <TasksInfo
-          completed={completedTasks.length}
-          allTasksNumber={props.tasks.length}
-        />
-      )}
-      <ul className={styles.list}>{ongoingTasks}</ul>
-      <ul className={styles.list}>{completedTasks}</ul>
+      {props.tasks.length > 0 ? (
+        <Fragment>
+          {props.tasks.length > 0 && (
+            <TasksInfo
+              completed={completedTasks.length}
+              allTasksNumber={props.tasks.length}
+            />
+          )}
+          <ul className={styles.list}>{ongoingTasks}</ul>
+          <div className={styles.line}></div>
+          <ul className={styles.list}>{completedTasks}</ul>
+        </Fragment>
+      ) : <p>Add tasks to get started!</p>}
     </Wrapper>
   );
 }

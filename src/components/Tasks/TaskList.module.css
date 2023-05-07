@@ -1,15 +1,38 @@
+* {
+    --primary-color: rgb(0, 127, 127);
+    --secondary-color: rgb(255, 127, 0);
+    --secondary-disabled-color: rgb(180, 120, 60);
+    --text-color: rgb(240, 240, 240);
+    --disabled-text-color: rgb(160, 160, 160);
+  }
+
 .wrapper {
-    max-width: fit-content;
+    width: 80vw;
     margin-bottom: 2rem;
 }
 
 .list {
+    margin-top: 1em;
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(calc(90%/3), 1fr));
     grid-template-rows: auto;
-    gap: 2rem;
+    gap: 1em 2rem;
 }
 
 .list li {
-    width: fit-content;
+    width: 100%;
+}
+
+.line {
+    height: 2px;
+    width: 90%;
+    margin: 1em 0 0 0;
+    background-color: var(--secondary-color);
+}
+
+@media (max-width: 620px){
+    .list {
+        grid-template-columns: 1fr;
+    }
 }

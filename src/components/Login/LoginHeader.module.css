@@ -9,7 +9,7 @@
 .login-area {
   height: 5rem;
   width: max-content;
-  padding: 0 0.5em 0 1em;
+  padding: 0 1em 0 1em;
   border-radius: 5rem 0 0 5rem;
   text-align: right;
   right: 0;
@@ -24,4 +24,17 @@
 
 .login-area p {
     margin-right: 1em;
+}
+
+@media (max-width: 600px){
+  .login-area{
+    flex-direction: column;
+    justify-content: center;
+    width: min-content;
+    height: 140px;
+  }
+
+  .login-area p {
+    font-size: 1.3rem;
+  }
 }

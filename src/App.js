@@ -103,7 +103,7 @@ function App() {
     setError(null);
     try {
       const response = await fetch(
-        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users/${loginState.key}tasks/${id}.json`,
+        `https://task-tracker-ak-default-rtdb.europe-west1.firebasedatabase.app/users/${loginState.key}/tasks/${id}.json`,
         {
           method: "DELETE",
           headers: {
@@ -143,7 +143,19 @@ function App() {
       }}
     >
       <header className={styles.header}>
-        <h1>Task Tracker</h1>
+        <div className={styles.title}>
+          <h1>Task Tracker</h1>
+          <p>
+            by{" "}
+            <a
+              href="https://github.com/Alek-Koziolek"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Alek Koziolek
+            </a>
+          </p>
+        </div>
         <LoginHeader />
       </header>
       {error && <h2 className={styles.error}>{error}</h2>}

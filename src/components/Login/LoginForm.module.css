@@ -34,7 +34,12 @@
 
 @media (max-width: 420px) {
   .login-form {
-    width: 100vw;
-    border-radius: 0;
+    width: 90vw;
+  }
+
+  .login-form p{
+    margin: -1em auto 1em auto;
+    width: 85vw;
+    text-align: center;
   }
 }

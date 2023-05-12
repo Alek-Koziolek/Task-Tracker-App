@@ -22,19 +22,20 @@
   background-color: var(--primary-color);
 }
 
-.login-area p {
-    margin-right: 1em;
-}
-
 @media (max-width: 600px){
   .login-area{
     flex-direction: column;
     justify-content: center;
     width: min-content;
     height: 140px;
+    
   }
 
   .login-area p {
     font-size: 1.3rem;
+  }
+
+  .login-area button {
+    margin-right: -1em;
   }
 }

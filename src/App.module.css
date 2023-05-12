@@ -32,6 +32,10 @@ header {
   font-size: 2.5em;
 }
 
+.title p a {
+  color: inherit;
+}
+
 .title p a:visited{
   color: inherit;
 }
@@ -92,9 +96,7 @@ header {
 
 @media (max-width: 420px) {
   .login {
-    border-radius: 0;
-    width: 100vw;
-    margin-left: -1px;
+    width: 90vw;
     text-align: center;
   }
 }

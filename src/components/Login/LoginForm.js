@@ -30,15 +30,8 @@ function passwordReducer(state, action) {
 }
 
 function passwordValidityCheck(password) {
-  if (
-    password.trim().length > 0 &&
-    password.match(/.*[A-Z].*/g) &&
-    password.match(/.*[a-z].*/g) &&
-    !password.match(/.*\s.*/g) &&
-    password.match(/.*[0-9].*/)
-  )
-    return true;
-  else return false;
+  const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?!.*\s).+$/;
+  return pattern.test(password) ? true : false;
 }
 
 function LoginForm(props) {

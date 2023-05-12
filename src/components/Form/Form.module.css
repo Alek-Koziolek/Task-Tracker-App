@@ -11,7 +11,10 @@
 
 @media (max-width: 450px){
     .form{
-        width: 100vw;
-        border-radius: 0;
+        width: 90vw;
+    }
+
+    .form input {
+        width: 90%;
     }
 }

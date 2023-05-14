@@ -19,6 +19,6 @@ When the task's due date is approaching its end, the app will signal this by cha
 
 The project is built in ReactJS. It uses react hooks like useState, useReducer, useContext, useEffect, and useCallback.
 
-Fetch API communicates with Firebase, which is being used for storing data, via HTTP requests.
+Fetch API communicates with Firebase, which is being used for storing data, via HTTP requests (REST API).
 
 Styling is done with CSS modules.

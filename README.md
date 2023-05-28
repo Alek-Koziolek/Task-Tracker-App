@@ -22,3 +22,8 @@ The project is built in ReactJS. It uses react hooks like useState, useReducer, 
 Fetch API communicates with Firebase, which is being used for storing data, via HTTP requests (REST API).
 
 Styling is done with CSS modules.
+
+
+## How to sign in?
+
+Simply fill in the login form and press the 'login' button. If your username is not yet in the database the app will ask whether you want to create an account. Upon pressing 'yes' your account will be created and you will be able to sign in with the credentials that you previously used to fill in the login form. Now you can start using the Task Tracker App!
